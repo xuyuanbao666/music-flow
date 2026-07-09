@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import { Playlist, Track } from '@music-flow/core'
 
 interface PlaylistStore {
@@ -16,7 +17,9 @@ interface PlaylistStore {
 
 const generateId = () => Math.random().toString(36).substring(2, 15)
 
-export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
+export const usePlaylistStore = create<PlaylistStore>()(
+  persist(
+    (set, get) => ({
   playlists: [],
   currentPlaylist: null,
 
@@ -76,4 +79,7 @@ export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
 
   setCurrentPlaylist: (playlist: Playlist | null) => { set({ currentPlaylist: playlist }) },
   getPlaylistById: (playlistId: string) => get().playlists.find(p => p.id === playlistId),
-}))
+    }),
+    { name: 'musicflow-playlists' }
+  )
+)

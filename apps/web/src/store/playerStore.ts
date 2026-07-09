@@ -45,6 +45,9 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   initEngine: () => {
     const engine = new WebAudioEngine()
     engine.onStateChange((newState: PlayerState) => set({ state: newState }))
+    engine.onTrackEnd(() => {
+      get().next()
+    })
     set({ engine })
   },
 
@@ -103,8 +106,20 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 
   setVolume: (volume: number) => { get().engine?.setVolume(volume) },
   setMute: (muted: boolean) => { get().engine?.setMute(muted) },
-  setRepeatMode: (mode: RepeatMode) => { set((state) => ({ state: { ...state.state, repeatMode: mode } })) },
-  setShuffle: (shuffle: boolean) => { set((state) => ({ state: { ...state.state, shuffle } })) },
+  setRepeatMode: (mode: RepeatMode) => {
+    const { engine } = get()
+    if (engine) {
+      engine.setRepeatMode(mode)
+    }
+    set((state) => ({ state: { ...state.state, repeatMode: mode } }))
+  },
+  setShuffle: (shuffle: boolean) => {
+    const { engine } = get()
+    if (engine) {
+      engine.setShuffle(shuffle)
+    }
+    set((state) => ({ state: { ...state.state, shuffle } }))
+  },
   setEqualizer: (bands: EqualizerBand[]) => { get().engine?.setEqualizer(bands) },
   loadEqualizerPreset: (presetId: string) => {
     const { engine } = get()

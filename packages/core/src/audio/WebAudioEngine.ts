@@ -1,4 +1,4 @@
-import { Track, PlayerState, EqualizerBand, EqualizerPreset } from '../types'
+import { Track, PlayerState, RepeatMode, EqualizerBand, EqualizerPreset } from '../types'
 import { AudioEngine } from './AudioEngine'
 import { Equalizer, DEFAULT_PRESETS } from './Equalizer'
 
@@ -12,6 +12,7 @@ export class WebAudioEngine implements AudioEngine {
   private equalizer: Equalizer
   private state: PlayerState
   private listeners: Set<(state: PlayerState) => void> = new Set()
+  private onTrackEndCallback: (() => void) | null = null
 
   constructor() {
     this.audio = new Audio()
@@ -82,7 +83,22 @@ export class WebAudioEngine implements AudioEngine {
       this.audio.play()
     } else {
       this.updateState({ status: 'stopped', currentTime: 0 })
+      if (this.onTrackEndCallback) {
+        this.onTrackEndCallback()
+      }
     }
+  }
+
+  onTrackEnd(callback: () => void): void {
+    this.onTrackEndCallback = callback
+  }
+
+  setRepeatMode(mode: RepeatMode): void {
+    this.state = { ...this.state, repeatMode: mode }
+  }
+
+  setShuffle(shuffle: boolean): void {
+    this.state = { ...this.state, shuffle }
   }
 
   async play(source: Track | string): Promise<void> {

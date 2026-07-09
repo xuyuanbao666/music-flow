@@ -1,4 +1,4 @@
-import { Track, PlayerState, EqualizerBand, EqualizerPreset } from '../types'
+import { Track, PlayerState, RepeatMode, EqualizerBand, EqualizerPreset } from '../types'
 
 export interface AudioEngine {
   play(source: Track | string): Promise<void>
@@ -13,6 +13,9 @@ export interface AudioEngine {
   getEqualizerPresets(): EqualizerPreset[]
   getState(): PlayerState
   onStateChange(callback: (state: PlayerState) => void): () => void
+  onTrackEnd(callback: () => void): void
+  setRepeatMode(mode: RepeatMode): void
+  setShuffle(shuffle: boolean): void
   getAnalyser(): AnalyserNode | null
   destroy(): void
 }
