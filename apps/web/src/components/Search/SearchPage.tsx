@@ -1,7 +1,7 @@
 import { Button } from '@music-flow/ui'
 import { useSearchStore } from '../../store/searchStore'
 import { usePlayerStore } from '../../store'
-import { Track } from '@music-flow/core'
+import { Track, SearchResult } from '@music-flow/core'
 
 export function SearchPage() {
   const { query, results, isSearching, setQuery, search } = useSearchStore()
@@ -12,7 +12,7 @@ export function SearchPage() {
     search()
   }
 
-  const handlePlay = (result: any) => {
+  const handlePlay = (result: SearchResult) => {
     const track: Track = {
       id: result.id,
       title: result.title,

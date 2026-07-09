@@ -6,7 +6,7 @@ interface SidebarProps { onNavigate: (page: string) => void; currentPage: string
 export function Sidebar({ onNavigate, currentPage }: SidebarProps) {
   const { playlists, createPlaylist } = usePlaylistStore()
   const handleCreatePlaylist = () => { const name = prompt('请输入歌单名称'); if (name) createPlaylist(name) }
-  const menuItems = [{ id: 'home', label: '首页', icon: '🏠' }, { id: 'library', label: '音乐库', icon: '🎵' }, { id: 'search', label: '搜索', icon: '🔍' }]
+  const menuItems = [{ id: 'home', label: '首页', icon: '🏠' }, { id: 'library', label: '音乐库', icon: '🎵' }, { id: 'search', label: '搜索', icon: '🔍' }, { id: 'equalizer', label: '均衡器', icon: '🎚️' }, { id: 'visualizer', label: '可视化', icon: '📊' }]
   return (
     <div className="w-64 bg-gray-900 h-full flex flex-col border-r border-gray-800">
       <div className="p-6"><h1 className="text-2xl font-bold text-white">MusicFlow</h1></div>

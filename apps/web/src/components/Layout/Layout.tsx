@@ -3,6 +3,8 @@ import { Sidebar } from './Sidebar'
 import { ThemeToggle } from './ThemeToggle'
 import { PlayerBar } from '../Player'
 import { SearchPage } from '../Search'
+import { EqualizerPanel } from '../Equalizer'
+import { AudioVisualizer } from '../Visualizer'
 
 interface LayoutProps { children: React.ReactNode }
 
@@ -13,6 +15,10 @@ export function Layout({ children }: LayoutProps) {
     switch (currentPage) {
       case 'search':
         return <SearchPage />
+      case 'equalizer':
+        return <EqualizerPanel />
+      case 'visualizer':
+        return <AudioVisualizer />
       default:
         return children
     }
