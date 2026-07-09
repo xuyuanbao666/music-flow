@@ -1,0 +1,98 @@
+<h2>前端技术栈方案对比</h2>
+<p class="subtitle">三端互通音乐播放器的核心架构选择</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Flutter 全平台</h3>
+      <p><strong>一套 Dart 代码跑三端</strong></p>
+      <ul>
+        <li>✅ 代码复用率最高（~95%）</li>
+        <li>✅ 音频可视化性能优秀（Skia 渲染）</li>
+        <li>✅ 桌面端已稳定（Windows/macOS/Linux）</li>
+        <li>❌ Web 端体验相对较弱</li>
+        <li>❌ Web Audio API 支持有限</li>
+        <li>❌ 在线音乐播放器生态较小</li>
+      </ul>
+      <p><em>适合：追求一套代码、Web 端非重点的场景</em></p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Tauri + Capacitor + React（推荐）</h3>
+      <p><strong>Web 技术栈统一，平台优化分别处理</strong></p>
+      <ul>
+        <li>✅ Tauri 桌面端极轻量（~5MB vs Electron ~150MB）</li>
+        <li>✅ Web Audio API 原生支持，音频处理能力强</li>
+        <li>✅ React 生态最丰富（Wavesurfer.js、Tone.js）</li>
+        <li>✅ Capacitor 让移动端共享 Web 代码</li>
+        <li>✅ Web 端天然支持，体验一致</li>
+        <li>❌ 需要维护少量平台特定代码</li>
+      </ul>
+      <p><em>适合：追求最佳音频体验 + 现代轻量架构</em></p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Electron + React Native + React</h3>
+      <p><strong>最成熟的三端方案</strong></p>
+      <ul>
+        <li>✅ 社区最大，资源最多</li>
+        <li>✅ React Native 移动端原生体验最好</li>
+        <li>✅ 成熟的音频库（react-native-track-player）</li>
+        <li>❌ Electron 体积大（~150MB）</li>
+        <li>❌ 三端代码复用率最低</li>
+        <li>❌ 需要维护三套代码</li>
+      </ul>
+      <p><em>适合：团队经验丰富、追求移动端极致体验</em></p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 2rem;">
+  <h3>架构图预览</h3>
+  <div class="mockup">
+    <div class="mockup-header">三端架构示意</div>
+    <div class="mockup-body" style="padding: 1.5rem;">
+      <div style="display: flex; justify-content: space-around; margin-bottom: 1.5rem;">
+        <div style="text-align: center; padding: 1rem; border: 2px solid #4a9eff; border-radius: 8px; min-width: 120px;">
+          <div style="font-size: 2rem;">🖥️</div>
+          <div><strong>桌面端</strong></div>
+          <div style="font-size: 0.8rem; color: #888;">Tauri / Electron</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #4a9eff; border-radius: 8px; min-width: 120px;">
+          <div style="font-size: 2rem;">📱</div>
+          <div><strong>移动端</strong></div>
+          <div style="font-size: 0.8rem; color: #888;">Capacitor / RN</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #4a9eff; border-radius: 8px; min-width: 120px;">
+          <div style="font-size: 2rem;">🌐</div>
+          <div><strong>Web 端</strong></div>
+          <div style="font-size: 0.8rem; color: #888;">React SPA</div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <div style="display: inline-block; padding: 0.8rem 2rem; background: #1a1a2e; border-radius: 8px;">
+          <div style="color: #4a9eff;">⬇️ 共享层：React + TypeScript + Web Audio API ⬇️</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-around;">
+        <div style="text-align: center; padding: 1rem; border: 2px solid #ff6b6b; border-radius: 8px; min-width: 120px;">
+          <div style="font-size: 2rem;">🎵</div>
+          <div><strong>本地播放</strong></div>
+          <div style="font-size: 0.8rem; color: #888;">P2P 同步</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #ff6b6b; border-radius: 8px; min-width: 120px;">
+          <div style="font-size: 2rem;">☁️</div>
+          <div><strong>云端服务</strong></div>
+          <div style="font-size: 0.8rem; color: #888;">数据同步 + 在线曲库</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

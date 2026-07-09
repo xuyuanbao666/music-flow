@@ -1,0 +1,250 @@
+<h2>音乐播放器完整设计方案</h2>
+<p class="subtitle">三端互通 · 高音质 · 混合架构</p>
+
+<div class="section">
+  <h3>🎯 项目概述</h3>
+  <div class="mockup">
+    <div class="mockup-header">核心定位</div>
+    <div class="mockup-body" style="padding: 1.5rem;">
+      <p><strong>名称：</strong>MusicFlow（暂定）</p>
+      <p><strong>定位：</strong>面向音乐爱好者的跨平台高音质播放器</p>
+      <p><strong>核心价值：</strong>三端无缝体验 + 多源音乐接入 + 高保真播放</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🏗️ 技术架构</h3>
+  <div class="mockup">
+    <div class="mockup-header">三端架构图</div>
+    <div class="mockup-body" style="padding: 1.5rem;">
+      <div style="display: flex; justify-content: space-around; margin-bottom: 1.5rem;">
+        <div style="text-align: center; padding: 1rem; border: 2px solid #4a9eff; border-radius: 8px; min-width: 140px;">
+          <div style="font-size: 2.5rem;">🖥️</div>
+          <div><strong>桌面端</strong></div>
+          <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">Tauri v2</div>
+          <div style="font-size: 0.7rem; color: #666;">Windows / macOS / Linux</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #4a9eff; border-radius: 8px; min-width: 140px;">
+          <div style="font-size: 2.5rem;">📱</div>
+          <div><strong>移动端</strong></div>
+          <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">Capacitor + React</div>
+          <div style="font-size: 0.7rem; color: #666;">iOS / Android</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #4a9eff; border-radius: 8px; min-width: 140px;">
+          <div style="font-size: 2.5rem;">🌐</div>
+          <div><strong>Web 端</strong></div>
+          <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">React SPA</div>
+          <div style="font-size: 0.7rem; color: #666;">PWA 支持</div>
+        </div>
+      </div>
+
+      <div style="background: #1a1a2e; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+        <div style="color: #4a9eff; text-align: center; font-weight: bold;">📦 共享核心层</div>
+        <div style="display: flex; justify-content: space-around; margin-top: 0.8rem; font-size: 0.85rem;">
+          <span>React 18</span>
+          <span>TypeScript</span>
+          <span>Zustand</span>
+          <span>Web Audio API</span>
+          <span>TanStack Query</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-around;">
+        <div style="text-align: center; padding: 1rem; border: 2px solid #51cf66; border-radius: 8px; min-width: 140px;">
+          <div style="font-size: 2rem;">🎵</div>
+          <div><strong>本地播放引擎</strong></div>
+          <div style="font-size: 0.75rem; color: #888; margin-top: 0.3rem;">FLAC / WAV / MP3</div>
+          <div style="font-size: 0.75rem; color: #888;">Web Audio API</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #51cf66; border-radius: 8px; min-width: 140px;">
+          <div style="font-size: 2rem;">☁️</div>
+          <div><strong>云端服务</strong></div>
+          <div style="font-size: 0.75rem; color: #888; margin-top: 0.3rem;">数据同步</div>
+          <div style="font-size: 0.75rem; color: #888;">在线曲库接入</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; border: 2px solid #51cf66; border-radius: 8px; min-width: 140px;">
+          <div style="font-size: 2rem;">🔄</div>
+          <div><strong>P2P 同步</strong></div>
+          <div style="font-size: 0.75rem; color: #888; margin-top: 0.3rem;">本地文件同步</div>
+          <div style="font-size: 0.75rem; color: #888;">CRDT 冲突解决</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>📁 项目结构</h3>
+  <div class="mockup">
+    <div class="mockup-header">Monorepo 结构</div>
+    <div class="mockup-body" style="padding: 1.5rem; font-family: monospace; font-size: 0.85rem;">
+      <pre style="margin: 0; color: #e0e0e0;">music-flow/
+├── apps/
+│   ├── desktop/          # Tauri 桌面应用
+│   ├── mobile/           # Capacitor 移动应用
+│   └── web/              # React Web 应用
+├── packages/
+│   ├── core/             # 共享核心逻辑
+│   │   ├── audio/        # 音频引擎
+│   │   ├── sync/         # 同步引擎
+│   │   ├── store/        # 状态管理
+│   │   └── api/          # API 客户端
+│   ├── ui/               # 共享 UI 组件库
+│   └── utils/            # 工具函数
+├── services/
+│   ├── api/              # 后端 API 服务
+│   ├── sync/             # 同步服务
+│   └── music-source/     # 音源接入服务
+└── docs/                 # 文档</pre>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🎵 核心功能模块</h3>
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">播放器核心</div>
+      <div class="mockup-body" style="padding: 1rem;">
+        <ul style="margin: 0; padding-left: 1.2rem;">
+          <li>本地文件播放（FLAC/WAV/MP3）</li>
+          <li>在线音乐流播放</li>
+          <li>10 段均衡器预设</li>
+          <li>播放队列管理</li>
+          <li>歌词显示（LRC 格式）</li>
+          <li>音频可视化（频谱图）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">数据同步</div>
+      <div class="mockup-body" style="padding: 1rem;">
+        <ul style="margin: 0; padding-left: 1.2rem;">
+          <li>播放列表云同步</li>
+          <li>播放进度同步</li>
+          <li>收藏/喜欢同步</li>
+          <li>均衡器设置同步</li>
+          <li>播放历史同步</li>
+          <li>本地文件 P2P 同步</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🔌 多源接入架构</h3>
+  <div class="mockup">
+    <div class="mockup-header">音源管理器</div>
+    <div class="mockup-body" style="padding: 1.5rem;">
+      <div style="display: flex; justify-content: space-around; margin-bottom: 1rem;">
+        <div style="text-align: center; padding: 0.8rem; border: 1px solid #ffd43b; border-radius: 6px;">
+          <div><strong>第三方 API</strong></div>
+          <div style="font-size: 0.75rem; color: #888;">网易云 / QQ音乐</div>
+        </div>
+        <div style="text-align: center; padding: 0.8rem; border: 1px solid #ffd43b; border-radius: 6px;">
+          <div><strong>用户音源</strong></div>
+          <div style="font-size: 0.75rem; color: #888;">Subsonic API</div>
+        </div>
+        <div style="text-align: center; padding: 0.8rem; border: 1px solid #ffd43b; border-radius: 6px;">
+          <div><strong>自建曲库</strong></div>
+          <div style="font-size: 0.75rem; color: #888;">REST API</div>
+        </div>
+      </div>
+      <div style="text-align: center; padding: 0.8rem; background: #2d2d3d; border-radius: 6px;">
+        <strong>统一音源抽象层</strong> → 标准化播放接口 → 播放引擎
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🛠️ 技术栈详情</h3>
+  <div class="mockup">
+    <div class="mockup-header">技术选型</div>
+    <div class="mockup-body" style="padding: 1.5rem;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>前端框架</strong></td>
+          <td style="padding: 0.5rem;">React 18 + TypeScript</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>状态管理</strong></td>
+          <td style="padding: 0.5rem;">Zustand + TanStack Query</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>桌面端</strong></td>
+          <td style="padding: 0.5rem;">Tauri v2 + Rust</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>移动端</strong></td>
+          <td style="padding: 0.5rem;">Capacitor 6</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>音频引擎</strong></td>
+          <td style="padding: 0.5rem;">Web Audio API + Howler.js</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>UI 组件</strong></td>
+          <td style="padding: 0.5rem;">Radix UI + Tailwind CSS</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>构建工具</strong></td>
+          <td style="padding: 0.5rem;">Vite + Turborepo</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #333;">
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>后端服务</strong></td>
+          <td style="padding: 0.5rem;">Node.js + Hono + PostgreSQL</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem; color: #4a9eff;"><strong>同步引擎</strong></td>
+          <td style="padding: 0.5rem;">CRDT (Yjs) + WebSocket</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>📋 开发路线图</h3>
+  <div class="mockup">
+    <div class="mockup-header">迭代计划</div>
+    <div class="mockup-body" style="padding: 1.5rem;">
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #51cf66; font-weight: bold;">Phase 1 - MVP（4周）</div>
+        <ul style="margin: 0.3rem 0 0 1.2rem; font-size: 0.9rem;">
+          <li>基础播放器（本地文件播放）</li>
+          <li>播放列表管理</li>
+          <li>基础 UI 框架</li>
+          <li>Web 端先行</li>
+        </ul>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #ffd43b; font-weight: bold;">Phase 2 - 多端扩展（3周）</div>
+        <ul style="margin: 0.3rem 0 0 1.2rem; font-size: 0.9rem;">
+          <li>Tauri 桌面端打包</li>
+          <li>Capacitor 移动端适配</li>
+          <li>基础云同步</li>
+        </ul>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #ff6b6b; font-weight: bold;">Phase 3 - 音源扩展（3周）</div>
+        <ul style="margin: 0.3rem 0 0 1.2rem; font-size: 0.9rem;">
+          <li>在线音乐 API 接入</li>
+          <li>Subsonic API 支持</li>
+          <li>多源搜索聚合</li>
+        </ul>
+      </div>
+      <div>
+        <div style="color: #cc5de8; font-weight: bold;">Phase 4 - 高级功能（持续迭代）</div>
+        <ul style="margin: 0.3rem 0 0 1.2rem; font-size: 0.9rem;">
+          <li>均衡器 + 音频可视化</li>
+          <li>歌词显示</li>
+          <li>P2P 文件同步</li>
+          <li>性能优化</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
