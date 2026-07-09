@@ -1,0 +1,1 @@
+export { NeteaseAdapter } from './NeteaseAdapter'
