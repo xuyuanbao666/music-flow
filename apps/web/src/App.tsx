@@ -1,12 +1,29 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Layout } from './components/Layout'
 import { FileImporter, TrackList } from './components/TrackList'
 import { Header } from './components/Layout'
 import { usePlayerStore } from './store'
+import { useAuthStore } from './store/authStore'
+import { LoginForm, RegisterForm } from './components/Auth'
 
 function App() {
   const { queue, initEngine } = usePlayerStore()
+  const { user } = useAuthStore()
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   useEffect(() => { initEngine() }, [initEngine])
+
+  if (!user) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-950">
+        {authMode === 'login' ? (
+          <LoginForm onSwitchToRegister={() => setAuthMode('register')} />
+        ) : (
+          <RegisterForm onSwitchToLogin={() => setAuthMode('login')} />
+        )}
+      </div>
+    )
+  }
+
   return (
     <Layout>
       <Header title="音乐库" subtitle="导入本地音乐文件开始播放" />
