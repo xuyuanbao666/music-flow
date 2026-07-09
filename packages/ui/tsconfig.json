@@ -1,6 +1,7 @@
 {
   "extends": "@music-flow/tsconfig/react.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "./dist",
     "rootDir": "./src"
   },
