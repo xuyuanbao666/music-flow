@@ -9,8 +9,8 @@ export function Sidebar({ onNavigate, currentPage }: SidebarProps) {
   const menuItems = [{ id: 'home', label: '首页', icon: '🏠' }, { id: 'library', label: '音乐库', icon: '🎵' }, { id: 'search', label: '搜索', icon: '🔍' }, { id: 'equalizer', label: '均衡器', icon: '🎚️' }, { id: 'visualizer', label: '可视化', icon: '📊' }]
   return (
     <div className="w-64 bg-gray-100 dark:bg-gray-900 h-full flex flex-col border-r border-gray-200 dark:border-gray-800">
-      <div className="p-6"><h1 className="text-2xl font-bold text-gray-900 dark:text-white">MusicFlow</h1></div>
-      <nav className="flex-1 px-3">
+      <div className="p-6 hidden lg:block"><h1 className="text-2xl font-bold text-gray-900 dark:text-white">MusicFlow</h1></div>
+      <nav className="flex-1 px-3 pt-4 lg:pt-0">
         <div className="space-y-1">
           {menuItems.map(item => <button key={item.id} onClick={() => onNavigate(item.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${currentPage === item.id ? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800'}`}><span className="text-xl">{item.icon}</span><span className="font-medium">{item.label}</span></button>)}
         </div>
