@@ -2,6 +2,8 @@
 
 三端互通高音质音乐播放器 - Cross-platform High-quality Music Player
 
+[English Version](./README_EN.md)
+
 ## ✨ 功能特性
 
 ### 🎵 音乐播放
