@@ -13,5 +13,6 @@ export interface AudioEngine {
   getEqualizerPresets(): EqualizerPreset[]
   getState(): PlayerState
   onStateChange(callback: (state: PlayerState) => void): () => void
+  getAnalyser(): AnalyserNode | null
   destroy(): void
 }

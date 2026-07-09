@@ -146,6 +146,10 @@ export class WebAudioEngine implements AudioEngine {
     return () => this.listeners.delete(callback)
   }
 
+  getAnalyser(): AnalyserNode | null {
+    return this.analyserNode
+  }
+
   destroy(): void {
     this.audio.pause()
     this.audio.src = ''
