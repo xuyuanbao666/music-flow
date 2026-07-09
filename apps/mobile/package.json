@@ -1,0 +1,19 @@
+{
+  "name": "@music-flow/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:web": "cd ../web && pnpm build",
+    "cap:sync": "cap sync",
+    "cap:add:android": "cap add android",
+    "cap:add:ios": "cap add ios",
+    "cap:open:android": "cap open android",
+    "cap:open:ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}
