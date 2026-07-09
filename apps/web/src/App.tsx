@@ -8,18 +8,28 @@ import { LoginForm, RegisterForm } from './components/Auth'
 
 function App() {
   const { queue, initEngine } = usePlayerStore()
-  const { user } = useAuthStore()
+  const { user, skipAuth } = useAuthStore()
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   useEffect(() => { initEngine() }, [initEngine])
 
   if (!user) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-950">
-        {authMode === 'login' ? (
-          <LoginForm onSwitchToRegister={() => setAuthMode('register')} />
-        ) : (
-          <RegisterForm onSwitchToLogin={() => setAuthMode('login')} />
-        )}
+        <div className="w-full max-w-md">
+          {authMode === 'login' ? (
+            <LoginForm onSwitchToRegister={() => setAuthMode('register')} />
+          ) : (
+            <RegisterForm onSwitchToLogin={() => setAuthMode('login')} />
+          )}
+          <div className="mt-6 text-center">
+            <button
+              onClick={skipAuth}
+              className="text-gray-500 hover:text-gray-400 text-sm underline"
+            >
+              跳过登录，直接使用
+            </button>
+          </div>
+        </div>
       </div>
     )
   }

@@ -23,7 +23,9 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
 
         {error && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 mb-6">
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-400 text-sm">
+              {error === 'Failed to fetch' ? '无法连接到服务器，请确保后端服务已启动，或点击下方"跳过登录"' : error}
+            </p>
           </div>
         )}
 

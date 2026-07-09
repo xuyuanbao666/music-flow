@@ -13,10 +13,12 @@ interface AuthStore {
   token: string | null
   isLoading: boolean
   error: string | null
+  isAuthenticated: boolean
   login: (email: string, password: string) => Promise<void>
   register: (email: string, name: string, password: string) => Promise<void>
   logout: () => void
   clearError: () => void
+  skipAuth: () => void
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -26,12 +28,13 @@ export const useAuthStore = create<AuthStore>()(
       token: null,
       isLoading: false,
       error: null,
+      isAuthenticated: false,
 
       login: async (email, password) => {
         set({ isLoading: true, error: null })
         try {
           const { user, token } = await authService.login(email, password)
-          set({ user, token, isLoading: false })
+          set({ user, token, isLoading: false, isAuthenticated: true })
         } catch (err) {
           set({ error: (err as Error).message, isLoading: false })
         }
@@ -41,15 +44,21 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null })
         try {
           const { user, token } = await authService.register(email, name, password)
-          set({ user, token, isLoading: false })
+          set({ user, token, isLoading: false, isAuthenticated: true })
         } catch (err) {
           set({ error: (err as Error).message, isLoading: false })
         }
       },
 
-      logout: () => set({ user: null, token: null, error: null }),
+      logout: () => set({ user: null, token: null, error: null, isAuthenticated: false }),
 
       clearError: () => set({ error: null }),
+
+      skipAuth: () => set({ 
+        user: { id: 'local', email: 'local@musicflow.app', name: '本地用户' }, 
+        token: 'local', 
+        isAuthenticated: true 
+      }),
     }),
     { name: 'musicflow-auth' }
   )
