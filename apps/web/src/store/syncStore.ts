@@ -14,8 +14,8 @@ export const useSyncStore = create<SyncStore>((set) => ({
   lastSyncTime: null,
   error: null,
   syncAll: async () => {
-    const { isAuthenticated } = useAuthStore.getState()
-    if (!isAuthenticated) return
+    const { token } = useAuthStore.getState()
+    if (!token) return
     set({ isSyncing: true, error: null })
     try {
       await SyncService.syncAll()

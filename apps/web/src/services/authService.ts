@@ -28,4 +28,16 @@ export const authService = {
   register(email: string, name: string, password: string) {
     return request<AuthResponse>('/api/auth/register', { email, name, password })
   },
+
+  async fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
+    const stored = localStorage.getItem('musicflow-auth')
+    const token = stored ? JSON.parse(stored)?.state?.token : null
+    return fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    })
+  },
 }
