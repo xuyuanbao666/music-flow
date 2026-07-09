@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Sidebar } from './Sidebar'
+import { ThemeToggle } from './ThemeToggle'
 import { PlayerBar } from '../Player'
 import { SearchPage } from '../Search'
 
@@ -20,7 +21,14 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="h-screen flex bg-gray-950">
       <Sidebar onNavigate={setCurrentPage} currentPage={currentPage} />
-      <main className="flex-1 overflow-auto pb-24"><div className="p-8">{renderPage()}</div></main>
+      <main className="flex-1 overflow-auto pb-24">
+        <div className="p-8">
+          <div className="flex justify-end mb-4">
+            <ThemeToggle />
+          </div>
+          {renderPage()}
+        </div>
+      </main>
       <PlayerBar />
     </div>
   )
