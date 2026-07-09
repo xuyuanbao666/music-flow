@@ -75,11 +75,11 @@ export function LyricsPanel({ onClose }: LyricsPanelProps) {
   }, [currentTrack])
 
   return (
-    <div className="bg-gray-900/95 backdrop-blur-xl rounded-xl p-6 flex flex-col h-full">
+    <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-xl p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-white text-lg font-semibold">歌词</h3>
+        <h3 className="text-gray-900 dark:text-white text-lg font-semibold">歌词</h3>
         <div className="flex items-center gap-2">
-          <label className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm px-2 py-1 rounded hover:bg-gray-700/50">
+          <label className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer text-sm px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700/50">
             {isLoading ? '加载中...' : '导入LRC'}
             <input
               type="file"
@@ -92,7 +92,7 @@ export function LyricsPanel({ onClose }: LyricsPanelProps) {
           {onClose && (
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors p-1"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-1"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -108,7 +108,7 @@ export function LyricsPanel({ onClose }: LyricsPanelProps) {
         className="flex-1 overflow-y-auto space-y-2 min-h-0"
       >
         {lyrics.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-3">
+          <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 gap-3">
             <svg className="w-12 h-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                 d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"

@@ -17,9 +17,9 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-800">
-        <h2 className="text-2xl font-bold text-white text-center mb-2">登录</h2>
-        <p className="text-gray-400 text-center mb-8">欢迎回到 MusicFlow</p>
+      <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-800">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">登录</h2>
+        <p className="text-gray-500 dark:text-gray-400 text-center mb-8">欢迎回到 MusicFlow</p>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 mb-6">
@@ -31,26 +31,26 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">邮箱</label>
             <input
               type="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); clearError() }}
               placeholder="your@email.com"
               required
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">密码</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">密码</label>
             <input
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); clearError() }}
               placeholder="输入密码"
               required
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
             />
           </div>
 
@@ -63,7 +63,7 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
           </button>
         </form>
 
-        <p className="text-center text-gray-400 mt-6">
+        <p className="text-center text-gray-500 dark:text-gray-400 mt-6">
           还没有账号？{' '}
           <button onClick={onSwitchToRegister} className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
             注册

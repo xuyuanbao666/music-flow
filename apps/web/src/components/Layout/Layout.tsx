@@ -25,7 +25,7 @@ export function Layout({ children }: LayoutProps) {
   }
 
   return (
-    <div className="h-screen flex bg-gray-950">
+    <div className="h-screen flex bg-white dark:bg-gray-950">
       <Sidebar onNavigate={setCurrentPage} currentPage={currentPage} />
       <main className="flex-1 overflow-auto pb-24">
         <div className="p-8">

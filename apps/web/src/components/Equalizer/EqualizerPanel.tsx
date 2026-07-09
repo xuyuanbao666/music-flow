@@ -53,7 +53,7 @@ function VerticalSlider({
   return (
     <div
       ref={sliderRef}
-      className="relative w-2 h-32 bg-gray-700 rounded-full cursor-pointer group"
+      className="relative w-2 h-32 bg-gray-300 dark:bg-gray-700 rounded-full cursor-pointer group"
       onMouseDown={handleMouseDown}
     >
       <div
@@ -92,8 +92,8 @@ export function EqualizerPanel() {
   const frequencies = ['32', '64', '125', '250', '500', '1K', '2K', '4K', '8K', '16K']
 
   return (
-    <div className="bg-gray-900 rounded-xl p-6">
-      <h3 className="text-white text-lg font-semibold mb-4">均衡器</h3>
+    <div className="bg-white dark:bg-gray-900 rounded-xl p-6">
+      <h3 className="text-gray-900 dark:text-white text-lg font-semibold mb-4">均衡器</h3>
 
       <div className="flex gap-2 mb-6 flex-wrap">
         {DEFAULT_PRESETS.map((preset) => (
@@ -111,7 +111,7 @@ export function EqualizerPanel() {
       <div className="flex gap-3 justify-between">
         {bands.map((band, i) => (
           <div key={i} className="flex flex-col items-center gap-2">
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {band.gain > 0 ? '+' : ''}
               {band.gain}dB
             </span>
@@ -122,7 +122,7 @@ export function EqualizerPanel() {
               step={1}
               onChange={(value) => handleBandChange(i, value)}
             />
-            <span className="text-xs text-gray-500">{frequencies[i]}</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500">{frequencies[i]}</span>
           </div>
         ))}
       </div>

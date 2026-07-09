@@ -32,9 +32,9 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-800">
-        <h2 className="text-2xl font-bold text-white text-center mb-2">注册</h2>
-        <p className="text-gray-400 text-center mb-8">创建你的 MusicFlow 账号</p>
+      <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-800">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">注册</h2>
+        <p className="text-gray-500 dark:text-gray-400 text-center mb-8">创建你的 MusicFlow 账号</p>
 
         {displayError && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 mb-6">
@@ -44,50 +44,50 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">用户名</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">用户名</label>
             <input
               type="text"
               value={name}
               onChange={(e) => { setName(e.target.value); clearError() }}
               placeholder="你的昵称"
               required
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">邮箱</label>
             <input
               type="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); clearError() }}
               placeholder="your@email.com"
               required
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">密码</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">密码</label>
             <input
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); clearError() }}
               placeholder="至少6个字符"
               required
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">确认密码</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">确认密码</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => { setConfirmPassword(e.target.value); clearError() }}
               placeholder="再次输入密码"
               required
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
             />
           </div>
 
@@ -100,7 +100,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
           </button>
         </form>
 
-        <p className="text-center text-gray-400 mt-6">
+        <p className="text-center text-gray-500 dark:text-gray-400 mt-6">
           已有账号？{' '}
           <button onClick={onSwitchToLogin} className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
             登录

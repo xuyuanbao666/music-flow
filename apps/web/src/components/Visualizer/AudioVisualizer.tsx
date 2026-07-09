@@ -48,8 +48,8 @@ export function AudioVisualizer() {
   }, [engine])
 
   return (
-    <div className="bg-gray-900 rounded-xl p-4">
-      <h3 className="text-white text-lg font-semibold mb-4">音频可视化</h3>
+    <div className="bg-white dark:bg-gray-900 rounded-xl p-4">
+      <h3 className="text-gray-900 dark:text-white text-lg font-semibold mb-4">音频可视化</h3>
       <canvas
         ref={canvasRef}
         width={800}

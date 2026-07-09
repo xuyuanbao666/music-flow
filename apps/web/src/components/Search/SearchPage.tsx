@@ -35,7 +35,7 @@ export function SearchPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="搜索音乐..."
-          className="flex-1 px-4 py-3 bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <Button type="submit" variant="primary" disabled={isSearching}>
           {isSearching ? '搜索中...' : '搜索'}
@@ -47,17 +47,17 @@ export function SearchPage() {
           {results.map((result) => (
             <div
               key={result.id}
-              className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-800 cursor-pointer"
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
               onClick={() => handlePlay(result)}
             >
               {result.coverUrl && (
                 <img src={result.coverUrl} alt={result.title} className="w-12 h-12 rounded-lg object-cover" />
               )}
               <div className="flex-1 min-w-0">
-                <div className="text-white font-medium truncate">{result.title}</div>
-                <div className="text-gray-400 text-sm truncate">{result.artist}</div>
+                <div className="text-gray-900 dark:text-white font-medium truncate">{result.title}</div>
+                <div className="text-gray-500 dark:text-gray-400 text-sm truncate">{result.artist}</div>
               </div>
-              <div className="text-gray-500 text-sm">{result.source}</div>
+              <div className="text-gray-400 dark:text-gray-500 text-sm">{result.source}</div>
             </div>
           ))}
         </div>

@@ -23,7 +23,7 @@ export function HomePage() {
       {recentTracks.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-white">最近播放</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">最近播放</h2>
             <button
               onClick={handlePlayRecent}
               className="text-sm text-green-500 hover:text-green-400 transition-colors"
@@ -38,7 +38,7 @@ export function HomePage() {
       {favorites.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               我喜欢的音乐 ({favorites.length})
             </h2>
             <button
@@ -54,9 +54,9 @@ export function HomePage() {
 
       {recentTracks.length === 0 && favorites.length === 0 && (
         <div className="text-center py-20">
-          <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-800 flex items-center justify-center">
+          <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
             <svg
-              className="w-12 h-12 text-gray-600"
+              className="w-12 h-12 text-gray-400 dark:text-gray-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -69,8 +69,8 @@ export function HomePage() {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">开始你的音乐之旅</h3>
-          <p className="text-gray-400 max-w-md mx-auto">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">开始你的音乐之旅</h3>
+          <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
             导入本地音乐文件或搜索在线歌曲，你的播放历史和收藏将会显示在这里
           </p>
         </div>

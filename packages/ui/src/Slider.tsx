@@ -52,7 +52,7 @@ export function Slider({
   return (
     <div
       ref={sliderRef}
-      className={`relative h-2 bg-gray-700 rounded-full cursor-pointer group ${className}`}
+      className={`relative h-2 bg-gray-300 dark:bg-gray-700 rounded-full cursor-pointer group ${className}`}
       onMouseDown={handleMouseDown}
     >
       <div
