@@ -31,3 +31,10 @@ body {
 .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 .delay-75 { animation-delay: 75ms; }
 .delay-150 { animation-delay: 150ms; }
+
+/* Foundation visual polish; keep existing components and contrast. */
+.music-shell { background-image: radial-gradient(ellipse at 85% 0%, #e0e7ff66, transparent 55%); }
+.dark .music-shell { background-image: radial-gradient(ellipse at 85% 0%, #312e8144, transparent 55%); }
+.music-player { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+button:focus-visible, input:focus-visible { outline: 2px solid #818cf8; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

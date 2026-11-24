@@ -12,6 +12,7 @@ export class WebAudioEngine implements AudioEngine {
   private equalizer: Equalizer
   private state: PlayerState
   private listeners: Set<(state: PlayerState) => void> = new Set()
+  private activeObjectUrl: string | null = null
   private onTrackEndCallback: (() => void) | null = null
 
   constructor() {
@@ -34,7 +35,7 @@ export class WebAudioEngine implements AudioEngine {
     this.audio.addEventListener('play', () => this.updateState({ status: 'playing' }))
     this.audio.addEventListener('pause', () => this.updateState({ status: 'paused' }))
     this.audio.addEventListener('ended', () => this.handleTrackEnd())
-    this.audio.addEventListener('loadedmetadata', () => this.updateState({ duration: this.audio.duration }))
+    this.audio.addEventListener('loadedmetadata', () => this.updateState({ duration: Number.isFinite(this.audio.duration) ? this.audio.duration : 0 }))
     this.audio.addEventListener('timeupdate', () => this.updateState({ currentTime: this.audio.currentTime }))
     this.audio.addEventListener('error', () => this.updateState({ status: 'error' }))
   }
@@ -52,6 +53,8 @@ export class WebAudioEngine implements AudioEngine {
     lastNode.connect(this.gainNode)
     this.gainNode.connect(this.analyserNode)
     this.analyserNode.connect(this.audioContext.destination)
+    this.gainNode.gain.value = this.state.volume
+    this.audio.volume = 1
     this.applyEqualizer()
   }
 
@@ -80,7 +83,7 @@ export class WebAudioEngine implements AudioEngine {
   private handleTrackEnd(): void {
     if (this.state.repeatMode === 'one') {
       this.audio.currentTime = 0
-      this.audio.play()
+      void this.audio.play().catch(() => this.updateState({ status: 'error' }))
     } else {
       this.updateState({ status: 'stopped', currentTime: 0 })
       if (this.onTrackEndCallback) {
@@ -101,21 +104,25 @@ export class WebAudioEngine implements AudioEngine {
     this.state = { ...this.state, shuffle }
   }
 
-  async play(source: Track | string): Promise<void> {
+  async play(source: Track | string, resolvedUrl?: string): Promise<void> {
     await this.initAudioContext()
     if (this.audioContext!.state === 'suspended') await this.audioContext!.resume()
-    const url = typeof source === 'string' ? source : source.sourceId
+    const url = resolvedUrl || (typeof source === 'string' ? source : source.sourceId)
+    if (this.activeObjectUrl) URL.revokeObjectURL(this.activeObjectUrl)
+    this.activeObjectUrl = resolvedUrl?.startsWith('blob:') ? resolvedUrl : null
     this.audio.src = url
     const track: Track = typeof source === 'string'
       ? { id: url, title: url.split('/').pop() || 'Unknown', artist: 'Unknown', album: 'Unknown', duration: 0, source: 'url', sourceId: url, metadata: { format: 'mp3' } }
       : source
-    this.updateState({ status: 'loading', currentTrack: track, currentTime: 0 })
-    await this.audio.play()
+    this.updateState({ status: 'loading', currentTrack: track, currentTime: 0, duration: 0 })
+    try { await this.audio.play() } catch (error) {
+      if (!(error instanceof DOMException && error.name === 'AbortError')) this.updateState({ status: 'error' })
+    }
   }
 
   pause(): void { this.audio.pause() }
 
-  resume(): void { this.audio.play() }
+  resume(): void { if (!this.state.currentTrack) return; void this.audioContext?.resume().catch(() => this.updateState({ status: 'error' })); void this.audio.play().catch(() => this.updateState({ status: 'error' })) }
 
   stop(): void {
     this.audio.pause()
@@ -124,13 +131,14 @@ export class WebAudioEngine implements AudioEngine {
   }
 
   seek(position: number): void {
-    this.audio.currentTime = Math.max(0, Math.min(position, this.state.duration))
+    if (!Number.isFinite(position) || !Number.isFinite(this.audio.duration) || this.audio.readyState === 0) return
+    this.audio.currentTime = Math.max(0, Math.min(position, this.audio.duration))
   }
 
   setVolume(volume: number): void {
     const v = Math.max(0, Math.min(1, volume))
-    this.audio.volume = v
     if (this.gainNode) this.gainNode.gain.value = v
+    else this.audio.volume = v
     this.updateState({ volume: v })
   }
 
@@ -168,7 +176,9 @@ export class WebAudioEngine implements AudioEngine {
 
   destroy(): void {
     this.audio.pause()
-    this.audio.src = ''
+    this.audio.removeAttribute('src')
+    if (this.activeObjectUrl) URL.revokeObjectURL(this.activeObjectUrl)
+    this.activeObjectUrl = null
     if (this.audioContext) {
       this.audioContext.close()
       this.audioContext = null

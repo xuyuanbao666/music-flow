@@ -15,7 +15,7 @@ export function PlayerBar() {
 
   if (status === 'stopped' && !currentTrack) return null
 
-  if (mini) {
+  if (mini && !showLyrics) {
     return (
       <div className="fixed bottom-4 right-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-3 z-50">
         {currentTrack?.coverUrl && (
@@ -35,7 +35,7 @@ export function PlayerBar() {
         </div>
         <PlayerControls compact />
         <button
-          onClick={() => setShowLyrics(!showLyrics)}
+          onClick={() => { setMini(false); setShowLyrics(true) }}
           className={`transition-colors p-1 ${showLyrics ? 'text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
           title="歌词"
         >
@@ -66,12 +66,12 @@ export function PlayerBar() {
   return (
     <>
       {showLyrics && (
-        <div className="fixed bottom-20 right-4 w-96 h-[60vh] z-40 shadow-2xl">
+        <div className="fixed bottom-28 right-2 sm:right-4 w-[calc(100%-1rem)] sm:w-96 h-[60dvh] z-40 shadow-2xl">
           <LyricsPanel onClose={() => setShowLyrics(false)} />
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 px-2 md:px-4 py-2 md:py-3 z-50">
+      <div className="music-player fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 px-2 md:px-4 py-2 md:py-3 z-50">
         <div className="max-w-7xl mx-auto">
           <ProgressBar />
           <div className="flex items-center justify-between mt-2 md:mt-3">

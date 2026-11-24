@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { Button } from '@music-flow/ui'
 import { useSearchStore } from '../../store/searchStore'
 import { usePlayerStore } from '../../store'
 import { Track, SearchResult } from '@music-flow/core'
 
 export function SearchPage() {
-  const { query, results, isSearching, setQuery, search } = useSearchStore()
+  const { query, results, isSearching, setQuery, search, error, resolvePlayUrl } = useSearchStore()
+  const [playError, setPlayError] = useState('')
   const { play } = usePlayerStore()
 
   const handleSearch = (e: React.FormEvent) => {
@@ -12,7 +14,10 @@ export function SearchPage() {
     search()
   }
 
-  const handlePlay = (result: SearchResult) => {
+  const handlePlay = async (result: SearchResult) => {
+    setPlayError('')
+    try {
+    const url = await resolvePlayUrl(result)
     const track: Track = {
       id: result.id,
       title: result.title,
@@ -21,10 +26,11 @@ export function SearchPage() {
       duration: result.duration,
       coverUrl: result.coverUrl,
       source: 'stream',
-      sourceId: result.sourceId,
+      sourceId: url,
       metadata: { format: 'mp3' }
     }
-    play(track)
+    await play(track)
+    } catch (e) { setPlayError(e instanceof Error ? e.message : '播放失败') }
   }
 
   return (
@@ -42,6 +48,7 @@ export function SearchPage() {
         </Button>
       </form>
 
+      {(error || playError) && <p role="alert" className="mb-4 text-sm text-red-500">{playError || error}</p>}
       {results.length > 0 && (
         <div className="space-y-2">
           {results.map((result) => (

@@ -5,14 +5,15 @@ import { LoginForm, RegisterForm } from './components/Auth'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 
 function App() {
-  const { state, initEngine } = usePlayerStore()
+  const { state, initEngine, restoreLibrary } = usePlayerStore()
   const { user, skipAuth } = useAuthStore()
   const { addToHistory } = useHistoryStore()
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
 
   useEffect(() => {
     initEngine()
-  }, [initEngine])
+    void restoreLibrary()
+  }, [initEngine, restoreLibrary])
 
   useEffect(() => {
     if (state.currentTrack && state.status === 'playing') {
