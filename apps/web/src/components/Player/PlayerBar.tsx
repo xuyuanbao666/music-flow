@@ -66,7 +66,7 @@ export function PlayerBar() {
   return (
     <>
       {showLyrics && (
-        <div className="fixed bottom-28 right-2 sm:right-4 w-[calc(100%-1rem)] sm:w-96 h-[60dvh] z-40 shadow-2xl">
+        <div className="fixed bottom-28 right-2 sm:right-4 w-[calc(100%_-_1rem)] sm:w-96 h-[60dvh] z-40 shadow-2xl">
           <LyricsPanel onClose={() => setShowLyrics(false)} />
         </div>
       )}
@@ -113,12 +113,12 @@ export function PlayerBar() {
               )}
             </div>
             <div className="flex-1 flex justify-center">
-              <PlayerControls />
+              <div className="sm:hidden"><PlayerControls compact /></div><div className="hidden sm:block"><PlayerControls /></div>
             </div>
             <div className="flex-1 flex justify-end items-center gap-1 md:gap-2">
               <button
                 onClick={() => setShowLyrics(!showLyrics)}
-                className={`hidden sm:block transition-colors p-1.5 rounded-lg ${showLyrics ? 'text-primary-400 bg-primary-400/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`transition-colors p-1.5 rounded-lg ${showLyrics ? 'text-primary-400 bg-primary-400/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                 title="歌词"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
