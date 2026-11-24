@@ -23,10 +23,6 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      # Temporary lockfile repair; restore frozen installs after committing generated lockfile.
-      - run: pnpm install --lockfile-only --no-frozen-lockfile
-      - name: Export regenerated lockfile
-        run: sed 's/^/MF_LOCK|/' pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @music-flow/api db:generate
       - run: pnpm --filter @music-flow/api test
