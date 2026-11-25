@@ -18,7 +18,7 @@ export function Layout() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <HomePage />
+        return <><section className="flow-hero"><div><p className="flow-kicker">MUSIC FLOW · 03</p><h2>聆听你的世界</h2><p>让每一首喜欢的音乐，都有自己的位置。</p><div className="flex gap-3 flex-wrap mt-5"><button className="flow-cta" onClick={() => setCurrentPage('library')}>导入音乐</button><button className="flow-secondary" disabled={!library.length} onClick={() => void playQueue(library)}>播放全部</button></div></div><div className="flow-record" aria-hidden="true"><i/></div></section><div className="flow-stats"><span><strong>{library.length}</strong> 本地歌曲</span><span><strong>离线</strong> 本地音乐空间</span></div><HomePage /></>
       case 'library':
         return (
           <>
@@ -82,7 +82,7 @@ export function Layout() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 min-w-0 overflow-auto pb-28">
+      <main className="flex-1 min-w-0 overflow-auto pb-36">
         {/* Mobile header with menu button */}
         <div className="lg:hidden sticky top-0 z-30 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
           <div className="flex items-center justify-between">
@@ -106,7 +106,7 @@ export function Layout() {
           <ThemeToggle />
         </div>
 
-        <div className="p-4 md:p-8">
+        <div className="flow-main p-4 md:p-8">
           {error && <p role="alert" className="mb-4 rounded-xl bg-red-100 dark:bg-red-950 p-3 text-red-700 dark:text-red-200">{error}</p>}
           {renderPage()}
         </div>

@@ -76,6 +76,7 @@ export function PlayerBar() {
           <ProgressBar />
           <div className="flex items-center justify-between mt-2 md:mt-3">
             <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+              {!currentTrack?.coverUrl && <span aria-hidden="true" className="flow-art hidden sm:grid">♪</span>}
               {currentTrack?.coverUrl && (
                 <img
                   src={currentTrack.coverUrl}

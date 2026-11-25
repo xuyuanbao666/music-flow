@@ -8,11 +8,11 @@ export function Sidebar({ onNavigate, currentPage }: SidebarProps) {
   const handleCreatePlaylist = () => { const name = prompt('请输入歌单名称'); if (name) createPlaylist(name) }
   const menuItems = [{ id: 'home', label: '首页', icon: '🏠' }, { id: 'library', label: '音乐库', icon: '🎵' }, { id: 'search', label: '搜索', icon: '🔍' }, { id: 'equalizer', label: '均衡器', icon: '🎚️' }, { id: 'visualizer', label: '可视化', icon: '📊' }]
   return (
-    <div className="w-64 bg-gray-100 dark:bg-gray-900 h-full flex flex-col border-r border-gray-200 dark:border-gray-800">
-      <div className="p-6 hidden lg:block"><h1 className="text-2xl font-bold text-gray-900 dark:text-white">MusicFlow</h1></div>
+    <div className="flow-sidebar w-64 bg-gray-100 dark:bg-gray-900 h-full flex flex-col border-r border-gray-200 dark:border-gray-800">
+      <div className="p-6 hidden lg:block"><div className="flex items-center gap-3"><span className="flow-brand">♪</span><div><h1 className="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">Music Flow</h1><p className="text-[10px] tracking-widest text-gray-500">YOUR SOUND</p></div></div></div>
       <nav className="flex-1 px-3 pt-4 lg:pt-0">
         <div className="space-y-1">
-          {menuItems.map(item => <button key={item.id} onClick={() => onNavigate(item.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${currentPage === item.id ? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800'}`}><span className="text-xl">{item.icon}</span><span className="font-medium">{item.label}</span></button>)}
+          {menuItems.map(item => <button key={item.id} onClick={() => onNavigate(item.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${currentPage === item.id ? 'bg-violet-100 dark:bg-violet-500/15 text-violet-700 dark:text-violet-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800'}`}><span className="text-xl">{item.icon}</span><span className="font-medium">{item.label}</span></button>)}
         </div>
         <div className="mt-8">
           <div className="flex items-center justify-between px-4 mb-3">
