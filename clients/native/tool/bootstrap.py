@@ -4,7 +4,6 @@ Run from clients/native after flutter create --no-pub --project-name music_flow 
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import plistlib
-import re
 root=Path(__file__).resolve().parent.parent
 # Template tests reference a generated MyApp; our real tests are in integration_test.
 (root/'test/widget_test.dart').unlink(missing_ok=True)
@@ -13,6 +12,8 @@ android=root/'android/app/src/main/AndroidManifest.xml'
 if android.exists():
     ns='http://schemas.android.com/apk/res/android'
     ET.register_namespace('android',ns)
+    tools='http://schemas.android.com/tools'
+    ET.register_namespace('tools',tools)
     key=lambda k:f'{{{ns}}}{k}'
     tree=ET.parse(android); doc=tree.getroot(); app=doc.find('application')
     for permission in ['android.permission.WAKE_LOCK','android.permission.FOREGROUND_SERVICE','android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK','android.permission.POST_NOTIFICATIONS']:
@@ -20,7 +21,7 @@ if android.exists():
             doc.insert(0,ET.Element('uses-permission',{key('name'):permission}))
     app.set(key('label'),'Music Flow')
     if not any(x.get(key('name'))=='com.ryanheise.audioservice.AudioService' for x in app.findall('service')):
-        service=ET.SubElement(app,'service',{key('name'):'com.ryanheise.audioservice.AudioService',key('foregroundServiceType'):'mediaPlayback',key('exported'):'true'})
+        service=ET.SubElement(app,'service',{key('name'):'com.ryanheise.audioservice.AudioService',key('foregroundServiceType'):'mediaPlayback',key('exported'):'true',f'{{{tools}}}ignore':'Instantiatable'})
         filt=ET.SubElement(service,'intent-filter'); ET.SubElement(filt,'action',{key('name'):'android.media.browse.MediaBrowserService'})
         receiver=ET.SubElement(app,'receiver',{key('name'):'com.ryanheise.audioservice.MediaButtonReceiver',key('exported'):'true'})
         filt=ET.SubElement(receiver,'intent-filter'); ET.SubElement(filt,'action',{key('name'):'android.intent.action.MEDIA_BUTTON'})

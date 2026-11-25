@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:math' as math;
@@ -32,7 +31,7 @@ void main() {
     final dir = await Directory.systemTemp.createTemp('musicflow-test-');
     final first=File('${dir.path}/Smoke Alpha.wav'), second=File('${dir.path}/Smoke Beta.wav');
     await wave(first,440); await wave(second,660);
-    final c=await MusicController.create(directory:dir, useSystemSession:false);
+    final c=await MusicController.create(directory:dir, useSystemSession:Platform.isAndroid || Platform.isIOS);
     try {
       await c.importFiles([first.path,second.path]);
       expect(c.library.length,2);
@@ -40,12 +39,12 @@ void main() {
       await tester.pump();
       await tester.tap(find.byKey(const ValueKey('song-Smoke Alpha')));
       await waitFor(tester,()=>c.playing && c.position.inMilliseconds>200 && c.duration.inSeconds>=11,'real native position advances');
-      await c.pause();
+      if (c.handler != null) { await c.handler!.pause(); } else { await c.pause(); }
       await waitFor(tester,()=>!c.playing,'pause');
       await c.seek(const Duration(seconds:6));
       await waitFor(tester,()=> (c.position.inMilliseconds-6000).abs()<1000,'seek');
       await c.setVolume(45);
-      await c.play();
+      if (c.handler != null) { await c.handler!.play(); } else { await c.play(); }
       await waitFor(tester,()=>c.playing,'resume');
       await c.next();
       await waitFor(tester,()=>c.current?.title=='Smoke Beta' && c.playing,'next song');

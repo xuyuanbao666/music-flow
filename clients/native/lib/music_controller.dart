@@ -67,7 +67,11 @@ class MusicController extends ChangeNotifier {
   Song? get current {
     if (queue.isEmpty) return null;
     final i = player.state.playlist.index;
-    return i >= 0 && i < queue.length ? queue[i] : null;
+    final medias = player.state.playlist.medias;
+    if (i < 0 || i >= medias.length) return null;
+    final id = medias[i].extras?['songId'];
+    for (final song in queue) { if (song.id == id) return song; }
+    return null;
   }
   Duration get position => player.state.position;
   Duration get duration => player.state.duration;
@@ -133,7 +137,7 @@ class MusicController extends ChangeNotifier {
     try {
       if (session != null && !await session!.setActive(true)) throw StateError('音频设备不可用');
       queue = List.of(songs);
-      await player.open(Playlist(queue.map((s) => Media(File(p.join(_files.path, s.filename)).uri.toString())).toList(), index: index));
+      await player.open(Playlist(queue.map((s) => Media(File(p.join(_files.path, s.filename)).uri.toString(), extras: {'songId': s.id})).toList(), index: index));
       await player.setPlaylistMode(repeat);
       await player.setShuffle(shuffle);
     } catch (e) { error = '播放失败：$e'; }
@@ -159,7 +163,7 @@ class MusicController extends ChangeNotifier {
     _changed();
     try { await _save(); } catch (e) { error = '收藏保存失败：$e'; _changed(); }
   }
-  Future<void> stop() async { await player.stop(); await session?.setActive(false); }
+  Future<void> stop() async { await player.stop(); queue = []; await session?.setActive(false); _changed(); }
   Future<void> close() async {
     _closed = true;
     for (final sub in _subs) { await sub.cancel(); }
@@ -185,7 +189,7 @@ class SystemAudioHandler extends BaseAudioHandler {
       updatePosition: controller.position,
       bufferedPosition: controller.duration,
       speed: 1.0,
-      queueIndex: controller.player.state.playlist.index,
+      queueIndex: song == null ? null : controller.player.state.playlist.index,
     ));
   }
   @override Future<void> play() => controller.play();
