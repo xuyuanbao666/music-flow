@@ -56,8 +56,8 @@ export const useAuthStore = create<AuthStore>()(
 
       skipAuth: () => set({ 
         user: { id: 'local', email: 'local@musicflow.app', name: '本地用户' }, 
-        token: 'local', 
-        isAuthenticated: true 
+        token: null, 
+        isAuthenticated: false 
       }),
     }),
     { name: 'musicflow-auth' }

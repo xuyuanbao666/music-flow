@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:4000' : '')
 
 interface AuthResponse {
   user: { id: string; email: string; name: string }
@@ -10,6 +10,7 @@ interface ApiError {
 }
 
 async function request<T>(path: string, body: unknown): Promise<T> {
+  if (!API_BASE) throw new Error('云端服务未配置，请使用本地模式')
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,7 @@ export const authService = {
       ...options,
       headers: {
         ...options.headers,
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token && token !== 'local' ? { Authorization: `Bearer ${token}` } : {}),
       },
     })
   },

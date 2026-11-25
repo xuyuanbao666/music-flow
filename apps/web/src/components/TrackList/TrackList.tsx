@@ -8,7 +8,7 @@ export function TrackList({ tracks, showIndex = true }: TrackListProps) {
   return (
     <div className="space-y-1">
       {showIndex && <div className="flex items-center gap-4 px-3 py-2 text-gray-400 dark:text-gray-500 text-sm border-b border-gray-200 dark:border-gray-800"><div className="w-8 text-center">#</div><div className="w-10" /><div className="flex-1">标题</div><div className="hidden md:block flex-1">专辑</div><div className="w-16 text-right">时长</div></div>}
-      {tracks.map((track, index) => <TrackItem key={track.id} track={track} index={index} showIndex={showIndex} />)}
+      {tracks.map((track, index) => <TrackItem key={track.id} track={track} contextTracks={tracks} index={index} showIndex={showIndex} />)}
     </div>
   )
 }

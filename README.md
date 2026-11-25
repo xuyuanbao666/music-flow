@@ -254,3 +254,10 @@ MIT License
 
 - GitHub: [xuyuanbao666](https://github.com/xuyuanbao666)
 - 项目地址: [music-flow](https://github.com/xuyuanbao666/music-flow)
+
+## v0.2.0 基础重构（开发中）
+
+- 本地文件保存在浏览器 IndexedDB；旧版临时链接无法迁移，请重新导入。清除站点数据会删除本地音乐库。
+- 本地模式无需账号；云服务尚需部署。API 必须配置至少 32 字符的 JWT_SECRET、DATABASE_URL，以及允许访问的 CORS_ORIGINS。Web 构建时设置 VITE_API_URL。
+- 在线搜索默认禁用；仅在配置有合法授权的 VITE_NETEASE_API_URL 服务后启用。尚未完成 Subsonic 接入及多端同步。
+- 本阶段未实现原生安装包、完整元数据解析或正式发布。

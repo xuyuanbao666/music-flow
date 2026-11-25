@@ -15,7 +15,7 @@ export function PlayerBar() {
 
   if (status === 'stopped' && !currentTrack) return null
 
-  if (mini) {
+  if (mini && !showLyrics) {
     return (
       <div className="fixed bottom-4 right-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-3 z-50">
         {currentTrack?.coverUrl && (
@@ -35,7 +35,7 @@ export function PlayerBar() {
         </div>
         <PlayerControls compact />
         <button
-          onClick={() => setShowLyrics(!showLyrics)}
+          onClick={() => { setMini(false); setShowLyrics(true) }}
           className={`transition-colors p-1 ${showLyrics ? 'text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
           title="歌词"
         >
@@ -66,12 +66,12 @@ export function PlayerBar() {
   return (
     <>
       {showLyrics && (
-        <div className="fixed bottom-20 right-4 w-96 h-[60vh] z-40 shadow-2xl">
+        <div className="fixed bottom-28 right-2 sm:right-4 w-[calc(100%_-_1rem)] sm:w-96 h-[60dvh] z-40 shadow-2xl">
           <LyricsPanel onClose={() => setShowLyrics(false)} />
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 px-2 md:px-4 py-2 md:py-3 z-50">
+      <div className="music-player fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 px-2 md:px-4 py-2 md:py-3 z-50">
         <div className="max-w-7xl mx-auto">
           <ProgressBar />
           <div className="flex items-center justify-between mt-2 md:mt-3">
@@ -94,7 +94,7 @@ export function PlayerBar() {
               {currentTrack && (
                 <button
                   onClick={() => toggleFavorite(currentTrack)}
-                  className={`hidden sm:block ml-2 transition-colors ${
+                  className={`ml-2 shrink-0 transition-colors ${
                     isFavorite(currentTrack.id)
                       ? 'text-red-500'
                       : 'text-gray-400 dark:text-gray-500 hover:text-red-400'
@@ -113,12 +113,12 @@ export function PlayerBar() {
               )}
             </div>
             <div className="flex-1 flex justify-center">
-              <PlayerControls />
+              <div className="sm:hidden"><PlayerControls compact /></div><div className="hidden sm:block"><PlayerControls /></div>
             </div>
-            <div className="flex-1 flex justify-end items-center gap-1 md:gap-2">
+            <div className="shrink-0 sm:flex-1 flex justify-end items-center gap-1 md:gap-2">
               <button
                 onClick={() => setShowLyrics(!showLyrics)}
-                className={`hidden sm:block transition-colors p-1.5 rounded-lg ${showLyrics ? 'text-primary-400 bg-primary-400/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`transition-colors p-1.5 rounded-lg ${showLyrics ? 'text-primary-400 bg-primary-400/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                 title="歌词"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

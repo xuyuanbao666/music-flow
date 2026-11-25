@@ -4,13 +4,15 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
-const JWT_SECRET = process.env.JWT_SECRET || 'secret'
+import { jwtSecret } from './security.js'
+const JWT_SECRET = jwtSecret()
 
 export const authRoutes = new Hono()
 
 authRoutes.post('/register', async (c) => {
   try {
     const { email, name, password } = await c.req.json()
+    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || typeof name !== 'string' || !name.trim() || name.length > 100 || typeof password !== 'string' || password.length < 8 || Buffer.byteLength(password) > 72) return c.json({ error: 'Invalid registration data' }, 400)
 
     const existingUser = await prisma.user.findUnique({ where: { email } })
     if (existingUser) {
@@ -37,6 +39,7 @@ authRoutes.post('/register', async (c) => {
 authRoutes.post('/login', async (c) => {
   try {
     const { email, password } = await c.req.json()
+    if (typeof email !== 'string' || typeof password !== 'string' || Buffer.byteLength(password) > 72) return c.json({ error: 'Invalid credentials' }, 401)
 
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) {

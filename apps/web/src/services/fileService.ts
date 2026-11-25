@@ -1,4 +1,5 @@
 import { Track, TrackMetadata } from '@music-flow/core'
+import { saveLocalTrack } from './libraryDb'
 
 export class FileService {
   static async importFiles(files: FileList): Promise<Track[]> {
@@ -17,23 +18,25 @@ export class FileService {
   }
 
   static async createTrackFromFile(file: File): Promise<Track> {
-    const url = URL.createObjectURL(file)
     const metadata = await this.extractMetadata(file)
-    return {
-      id: this.generateId(),
+    const id = this.generateId()
+    const track: Track = {
+      id,
       title: metadata.title || file.name.replace(/\.[^/.]+$/, ''),
       artist: metadata.artist || '未知艺术家',
       album: metadata.album || '未知专辑',
       duration: metadata.duration || 0,
       coverUrl: metadata.coverUrl,
       source: 'local',
-      sourceId: url,
+      sourceId: id,
       localPath: file.name,
       metadata: { format: this.getFormat(file.name), bitrate: metadata.bitrate, sampleRate: metadata.sampleRate, channels: metadata.channels },
     }
+    await saveLocalTrack(track, file)
+    return track
   }
 
-  private static generateId(): string { return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) }
+  private static generateId(): string { return crypto.randomUUID() }
 
   private static getFormat(filename: string): TrackMetadata['format'] {
     const ext = filename.split('.').pop()?.toLowerCase()
@@ -44,8 +47,19 @@ export class FileService {
     return new Promise((resolve) => {
       const audio = new Audio()
       const url = URL.createObjectURL(file)
-      audio.addEventListener('loadedmetadata', () => { resolve({ duration: audio.duration }); URL.revokeObjectURL(url) })
-      audio.addEventListener('error', () => { resolve({}); URL.revokeObjectURL(url) })
+      let done = false
+      const finish = (duration?: number) => {
+        if (done) return
+        done = true
+        clearTimeout(timer)
+        audio.removeAttribute('src')
+        URL.revokeObjectURL(url)
+        resolve(Number.isFinite(duration) ? { duration } : {})
+      }
+      const timer = setTimeout(() => finish(), 10000)
+      audio.addEventListener('loadedmetadata', () => finish(audio.duration), { once: true })
+      audio.addEventListener('error', () => finish(), { once: true })
+      audio.preload = 'metadata'
       audio.src = url
     })
   }

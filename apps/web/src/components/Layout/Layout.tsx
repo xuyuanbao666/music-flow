@@ -13,7 +13,7 @@ import { usePlayerStore } from '../../store'
 export function Layout() {
   const [currentPage, setCurrentPage] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { queue } = usePlayerStore()
+  const { library, error, playQueue } = usePlayerStore()
 
   const renderPage = () => {
     switch (currentPage) {
@@ -25,10 +25,10 @@ export function Layout() {
             <Header title="音乐库" subtitle="导入本地音乐文件开始播放" />
             <div className="space-y-6">
               <FileImporter />
-              {queue.length > 0 && (
+              {library.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">已导入的歌曲 ({queue.length})</h2>
-                  <TrackList tracks={queue} />
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">已导入的歌曲 ({library.length}) <button className="ml-3 text-sm text-primary-500" onClick={() => void playQueue(library)}>播放全部</button></h2>
+                  <TrackList tracks={library} />
                 </div>
               )}
             </div>
@@ -61,7 +61,7 @@ export function Layout() {
   }
 
   return (
-    <div className="h-screen flex bg-white dark:bg-gray-950">
+    <div className="music-shell h-[100dvh] flex bg-white dark:bg-gray-950">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
@@ -82,13 +82,13 @@ export function Layout() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto pb-24">
+      <main className="flex-1 min-w-0 overflow-auto pb-28">
         {/* Mobile header with menu button */}
         <div className="lg:hidden sticky top-0 z-30 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setSidebarOpen(true)}
+                aria-label="打开导航菜单" onClick={() => setSidebarOpen(true)}
                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 <svg className="w-6 h-6 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,6 +107,7 @@ export function Layout() {
         </div>
 
         <div className="p-4 md:p-8">
+          {error && <p role="alert" className="mb-4 rounded-xl bg-red-100 dark:bg-red-950 p-3 text-red-700 dark:text-red-200">{error}</p>}
           {renderPage()}
         </div>
       </main>
