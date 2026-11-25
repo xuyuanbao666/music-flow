@@ -1,0 +1,10 @@
+.dart_tool/
+.flutter-plugins*
+.metadata
+build/
+android/
+ios/
+linux/
+macos/
+windows/
+test/widget_test.dart
