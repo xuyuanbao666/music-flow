@@ -23,6 +23,7 @@ export function PlayerControls({ compact = false }: PlayerControlsProps) {
           variant="ghost"
           size="sm"
           onClick={previous}
+          title="上一首 (Ctrl+←)"
           className="p-1"
         >
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -33,6 +34,7 @@ export function PlayerControls({ compact = false }: PlayerControlsProps) {
           variant="primary"
           size="sm"
           onClick={isPlaying ? pause : resume}
+          title="播放/暂停 (Space)"
           className="rounded-full w-8 h-8 p-0"
         >
           {isPlaying ? (
@@ -45,7 +47,7 @@ export function PlayerControls({ compact = false }: PlayerControlsProps) {
             </svg>
           )}
         </Button>
-        <Button variant="ghost" size="sm" onClick={next} className="p-1">
+        <Button variant="ghost" size="sm" onClick={next} title="下一首 (Ctrl+→)" className="p-1">
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
           </svg>

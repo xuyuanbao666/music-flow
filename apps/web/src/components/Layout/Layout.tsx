@@ -82,13 +82,13 @@ export function Layout() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto pb-24">
+      <main className="flex-1 min-w-0 overflow-auto pb-28">
         {/* Mobile header with menu button */}
         <div className="lg:hidden sticky top-0 z-30 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setSidebarOpen(true)}
+                aria-label="打开导航菜单" onClick={() => setSidebarOpen(true)}
                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 <svg className="w-6 h-6 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

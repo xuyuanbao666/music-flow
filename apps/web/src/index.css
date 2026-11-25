@@ -38,3 +38,5 @@ body {
 .music-player { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
 button:focus-visible, input:focus-visible { outline: 2px solid #818cf8; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+.music-slider { height: 20px; touch-action: pan-y; }

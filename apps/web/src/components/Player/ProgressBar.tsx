@@ -8,7 +8,7 @@ export function ProgressBar() {
   return (
     <div className="flex items-center gap-3 w-full">
       <span className="text-xs text-gray-400 w-10 text-right">{formatTime(currentTime)}</span>
-      <Slider value={currentTime} min={0} max={duration || 100} onChange={seek} className="flex-1" />
+      <Slider label="播放进度" value={currentTime} min={0} max={duration || 100} onChange={seek} className="flex-1" />
       <span className="text-xs text-gray-400 w-10">{formatTime(duration)}</span>
     </div>
   )

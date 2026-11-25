@@ -94,7 +94,7 @@ export function PlayerBar() {
               {currentTrack && (
                 <button
                   onClick={() => toggleFavorite(currentTrack)}
-                  className={`hidden sm:block ml-2 transition-colors ${
+                  className={`ml-2 shrink-0 transition-colors ${
                     isFavorite(currentTrack.id)
                       ? 'text-red-500'
                       : 'text-gray-400 dark:text-gray-500 hover:text-red-400'
@@ -115,7 +115,7 @@ export function PlayerBar() {
             <div className="flex-1 flex justify-center">
               <div className="sm:hidden"><PlayerControls compact /></div><div className="hidden sm:block"><PlayerControls /></div>
             </div>
-            <div className="flex-1 flex justify-end items-center gap-1 md:gap-2">
+            <div className="shrink-0 sm:flex-1 flex justify-end items-center gap-1 md:gap-2">
               <button
                 onClick={() => setShowLyrics(!showLyrics)}
                 className={`transition-colors p-1.5 rounded-lg ${showLyrics ? 'text-primary-400 bg-primary-400/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}

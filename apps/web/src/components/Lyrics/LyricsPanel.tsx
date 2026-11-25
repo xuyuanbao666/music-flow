@@ -24,14 +24,18 @@ export function LyricsPanel({ onClose }: LyricsPanelProps) {
       return
     }
 
+    let active = true
+    setLyrics([])
+    setCurrentLine(0)
     const cached = LyricsService.getCachedLyrics(currentTrack.id)
     if (cached && cached.length > 0) {
       setLyrics(cached)
     } else {
       LyricsService.loadLyricsForTrack(currentTrack).then((loaded) => {
-        if (loaded.length > 0) setLyrics(loaded)
-      })
+        if (active) setLyrics(loaded)
+      }).catch(() => { if (active) setLyrics([]) })
     }
+    return () => { active = false }
   }, [currentTrack?.id])
 
   useEffect(() => {
@@ -92,6 +96,7 @@ export function LyricsPanel({ onClose }: LyricsPanelProps) {
           {onClose && (
             <button
               onClick={onClose}
+              aria-label="关闭歌词"
               className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-1"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,7 +141,7 @@ export function LyricsPanel({ onClose }: LyricsPanelProps) {
                 onClick={() => seek(line.time)}
                 className={`text-center transition-all duration-300 cursor-pointer px-4 py-1 rounded ${
                   i === currentLine
-                    ? 'text-white text-lg font-bold scale-105'
+                    ? 'text-gray-900 dark:text-white text-lg font-bold scale-105'
                     : i < currentLine
                       ? 'text-gray-600 text-sm hover:text-gray-400'
                       : 'text-gray-500 text-sm hover:text-gray-400'
