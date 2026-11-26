@@ -37,8 +37,20 @@ void main() {
       expect(c.library.length,2);
       await tester.pumpWidget(MusicFlow(controller:c));
       await tester.pump();
-      await tester.tap(find.byKey(const ValueKey('song-Smoke Alpha')));
-      await waitFor(tester,()=>c.playing && c.position.inMilliseconds>200 && c.duration.inSeconds>=11,'real native position advances');
+      final songTile = find.byKey(const ValueKey('song-Smoke Alpha'));
+      await tester.ensureVisible(songTile);
+      expect(songTile.hitTestable(), findsOneWidget);
+      final errors = <String>[];
+      final errorSubscription = c.player.stream.error.listen(errors.add);
+      try {
+        await tester.tap(songTile);
+        await waitFor(tester,()=>c.playing && c.position.inMilliseconds>200 && c.duration.inSeconds>=11,'real native position advances');
+      } catch (_) {
+        debugPrint('Playback diagnostics: playing=${c.playing}, position=${c.position}, duration=${c.duration}, current=${c.current?.title}, busy=${c.busy}, error=${c.error}, nativeErrors=$errors');
+        rethrow;
+      } finally {
+        await errorSubscription.cancel();
+      }
       if (c.handler != null) { await c.handler!.pause(); } else { await c.pause(); }
       await waitFor(tester,()=>!c.playing,'pause');
       await c.seek(const Duration(seconds:6));
