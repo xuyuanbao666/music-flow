@@ -1,4 +1,4 @@
-name: Targeted macOS and iOS native recheck
+name: Targeted iOS simulator connection recheck
 on:
   push:
     branches: [maintenance/native-apple-recheck]
@@ -9,67 +9,9 @@ concurrency:
   group: native-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  desktop:
-    name: Native ${{ matrix.target }} build and playback
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 55
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: macos-15
-            target: macos
-    defaults:
-      run:
-        working-directory: clients/native
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.35.7'
-          channel: stable
-          cache: true
-      - name: Linux native dependencies
-        if: matrix.target == 'linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libmpv-dev mpv xvfb pulseaudio
-          pulseaudio --start
-          pactl load-module module-null-sink sink_name=musicflow_test
-          pactl set-default-sink musicflow_test
-      - name: Generate platform runner
-        run: |
-          flutter create --no-pub --project-name music_flow --org com.musicflow --platforms=${{ matrix.target }} .
-          python tool/bootstrap.py
-          flutter pub get
-          flutter analyze
-      - name: Actual Linux playback integration
-        if: matrix.target == 'linux'
-        run: xvfb-run -a flutter test integration_test/player_test.dart -d linux
-      - name: Actual Windows/macOS playback integration
-        if: matrix.target != 'linux'
-        run: flutter test integration_test/player_test.dart -d ${{ matrix.target }}
-      - name: Build desktop release candidate
-        run: flutter build ${{ matrix.target }} --release
-      - name: Install Windows installer tooling
-        if: matrix.target == 'windows'
-        run: choco install innosetup -y --no-progress
-      - name: Package and verify checksums
-        run: python tool/package.py ${{ matrix.target }}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: native-${{ matrix.target }}-v0.3.0-candidate
-          path: clients/native/release-files/
-          if-no-files-found: error
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: lockfile-${{ matrix.target }}
-          path: clients/native/pubspec.lock
-          if-no-files-found: warn
   ios:
     name: iOS simulator build and playback
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 65
     defaults:
       run:
@@ -78,14 +20,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'
-          channel: stable
+          flutter-version: '3.51.0-0.2.pre'
+          channel: beta
           cache: true
       - run: |
           flutter create --no-pub --project-name music_flow --org com.musicflow --platforms=ios .
           python tool/bootstrap.py
           flutter pub get
           flutter analyze
+      - name: Verify upstream simulator log-stream readiness fix
+        run: |
+          git -C "$FLUTTER_ROOT" merge-base --is-ancestor c3ed85ef987759ee54a6bce275490cde2a238dc1 HEAD || grep -q 'log stream is ready' "$FLUTTER_ROOT/packages/flutter_tools/lib/src/ios/simulators.dart"
       - name: Start iOS simulator
         run: |
           device=$(xcrun simctl list devices available -j | python -c 'import json,sys; data=json.load(sys.stdin)["devices"]; print(next(d["udid"] for runtime,devices in data.items() if "iOS" in runtime for d in devices if d["name"].startswith("iPhone") and d.get("isAvailable",True)))')
@@ -115,7 +60,7 @@ jobs:
       - run: python tool/package.py ios
       - uses: actions/upload-artifact@v4
         with:
-          name: native-ios-v0.3.0-simulator-only
+          name: native-ios-v0.3.0-beta-sdk-simulator-only
           path: clients/native/release-files/
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
