@@ -33,6 +33,15 @@ void main() {
     await wave(first,440); await wave(second,660);
     final c=await MusicController.create(directory:dir, useSystemSession:Platform.isAndroid || Platform.isIOS);
     try {
+      // The hosted Windows runner has no usable audio endpoint. This is a
+      // test-only output driver, never selected by the shipping application.
+      const headless = bool.fromEnvironment('MUSIC_FLOW_HEADLESS_AUDIO');
+      if (headless) {
+        expect(Platform.isWindows, isTrue);
+        final native = c.player.platform as NativePlayer;
+        await native.setProperty('ao', 'null');
+        debugPrint('HEADLESS: native decoding and timing, not physical speaker output');
+      }
       await c.importFiles([first.path,second.path]);
       expect(c.library.length,2);
       await tester.pumpWidget(MusicFlow(controller:c));
@@ -44,12 +53,17 @@ void main() {
       final errorSubscription = c.player.stream.error.listen(errors.add);
       try {
         await tester.tap(songTile);
-        await waitFor(tester,()=>c.playing && c.position.inMilliseconds>200 && c.duration.inSeconds>=11,'real native position advances');
+        await waitFor(tester,()=>c.current?.title=='Smoke Alpha' && c.playing && c.position.inMilliseconds>200 && c.duration.inSeconds>=11,'real native position advances');
       } catch (_) {
         debugPrint('Playback diagnostics: playing=${c.playing}, position=${c.position}, duration=${c.duration}, current=${c.current?.title}, busy=${c.busy}, error=${c.error}, nativeErrors=$errors');
         rethrow;
       } finally {
         await errorSubscription.cancel();
+      }
+      expect(c.error, isNull);
+      if (headless) {
+        final native = c.player.platform as NativePlayer;
+        expect(await native.getProperty('current-ao'), 'null');
       }
       if (c.handler != null) { await c.handler!.pause(); } else { await c.pause(); }
       await waitFor(tester,()=>!c.playing,'pause');
